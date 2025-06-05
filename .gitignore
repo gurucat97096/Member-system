@@ -3,5 +3,3 @@ __pycache__/
 venv/
 env/
 *.db
-templates/*.html linguist-detectable=false
-static/* linguist-detectable=false
