@@ -6,17 +6,17 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 from pydantic import BaseModel
 
-app = FastAPI()
+app       = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-MONGO_URL = "mongodb://localhost:27017"
-client = AsyncIOMotorClient(MONGO_URL)
-db = client["user_db"]       
+MONGO_URL       = "mongodb://localhost:27017"
+client          = AsyncIOMotorClient(MONGO_URL)
+db              = client["user_db"]       
 user_collection = db["users"]  
 
 class SignupRequest(BaseModel):
     nickname: str
-    email: str
+    email   : str
     password: str
 
 @app.get("/", response_class=HTMLResponse)
@@ -27,7 +27,7 @@ async def home(request: Request):
 @app.post("/signup")
 async def signup(
     nickname: str = Form(None),
-    email: str = Form(None),
+    email   : str = Form(None),
     password: str = Form(None)
 ):
     existing_user = await user_collection.find_one({"email": email})
@@ -38,7 +38,7 @@ async def signup(
 
     new_user = {
         "nickname": nickname,
-        "email": email,
+        "email"   : email,
         "password": hashed_pw.decode("utf-8")
     }
     await user_collection.insert_one(new_user)
@@ -47,7 +47,7 @@ async def signup(
 
 @app.post("/signin")
 async def signin(
-    email: str = Form(None),
+    email   : str = Form(None),
     password: str = Form(None)
 ):
     user = await user_collection.find_one({"email": email})
